@@ -1,0 +1,17 @@
+<div class="edit-product-page">
+  <h2>Editar Producto</h2>
+  
+  <app-error-message 
+    *ngIf="errorMessage"
+    [message]="errorMessage">
+  </app-error-message>
+
+  <app-product-form
+    *ngIf="product"
+    [initialProduct]="product"
+    [isEditMode]="true" 
+    (formSubmitted)="onSubmit($event)"> 
+  </app-product-form>
+  
+  <app-loading *ngIf="isLoading"></app-loading>
+</div>

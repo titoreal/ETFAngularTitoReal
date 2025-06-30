@@ -1,0 +1,11 @@
+{
+  "/bp": {
+    "target": "http://localhost:3002",
+    "secure": false,
+    "changeOrigin": true,
+    "ws": true,
+    "logLevel": "debug",
+    "timeout": 5000,
+    "proxyTimeout": 5000
+  }
+}

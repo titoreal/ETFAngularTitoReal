@@ -1,0 +1,12 @@
+<div class="add-product-page">
+  <app-error-message
+    *ngIf="errorMessage"
+    [message]="errorMessage"
+    [dismissible]="true"
+  >
+  </app-error-message>
+
+  <app-product-form (formSubmitted)="onSubmit($event)"> </app-product-form>
+
+  <app-loading *ngIf="isLoading"></app-loading>
+</div>
