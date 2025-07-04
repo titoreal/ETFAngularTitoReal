@@ -5,85 +5,152 @@
   </header>
 
   <div class="product-list-container">
-  <div class="product-list-content">
-    <div class="list-controls">
-      <div class="search-container">
-        <input 
-          type="text" 
-          [(ngModel)]="searchTerm" 
-          (ngModelChange)="onSearchChange($event)"
-          placeholder="Buscar productos..."
-          class="search-input"
+    <div class="product-list-content">
+      <div class="list-controls">
+        <div class="search-container">
+          <input
+            type="text"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="onSearchChange($event)"
+            placeholder="Buscar productos..."
+            class="search-input"
+          />
+        </div>
+
+        <button class="add-button" routerLink="/products/add">Agregar</button>
+      </div>
+
+      <div class="product-table">
+        <div class="table-header">
+          <div class="header-item logo">Logo</div>
+          <div class="header-item">Nombre</div>
+          <div class="header-item">Descripción</div>
+          <div class="header-item">Fecha Liberación</div>
+          <div class="header-item">Fecha Revisión</div>
+          <div class="header-item actions">Acciones</div>
+        </div>
+
+        <app-loading *ngIf="isLoading()"></app-loading>
+
+       
+        <app-error-message
+          *ngIf="error() && !showDeleteModal"
+          [message]="error()"
         >
-      </div>
-    
-      <button class="add-button" routerLink="/products/add">
-        Agregar
-      </button>
-    </div>
+        </app-error-message>
 
-    <div class="product-table">
-      <div class="table-header">
-        <div class="header-item logo">Logo</div>
-        <div class="header-item">Nombre</div>
-        <div class="header-item">Descripción</div>
-        <div class="header-item">Fecha Liberación</div>
-        <div class="header-item">Fecha Revisión</div>
-        <div class="header-item actions">Acciones</div>
-      </div>
+        <div class="table-body">
+          <div *ngFor="let product of getPaginatedProducts()" class="table-row">
+            <div class="row-item logo">
+              <img
+                [src]="product.logo || 'assets/default-product.png'"
+                (error)="handleImageError($event)"
+                alt="Logo del producto"
+                class="product-logo"
+              />
+            </div>
+            <div class="row-item">{{ product.name }}</div>
+            <div class="row-item">{{ product.description }}</div>
+            <div class="row-item">
+              {{ product.date_release | date : "dd/MM/yyyy" }}
+            </div>
+            <div class="row-item">
+              {{ product.date_revision | date : "dd/MM/yyyy" }}
+            </div>
+            <div class="row-item actions">
+              <div class="actions-menu">
+                <button
+                  class="menu-button"
+                  (click)="toggleMenu(product.id, $event)"
+                >
+                  ⋮
+                </button>
 
-      <app-loading *ngIf="isLoading()"></app-loading>
-      <app-error-message *ngIf="error()" [message]="error()"></app-error-message>
-
-      <div class="table-body">
-        <div *ngFor="let product of paginatedProducts()" class="table-row">
-          <div class="row-item logo">
-            <img 
-              [src]="product.logo || 'assets/default-product.png'" 
-              (error)="handleImageError($event)"
-              alt="Logo del producto"
-              class="product-logo"
-            >
-          </div>
-          <div class="row-item">{{ product.name }}</div>
-          <div class="row-item">{{ product.description }}</div>
-          <div class="row-item">{{ product.date_release | date:'dd/MM/yyyy' }}</div>
-          <div class="row-item">{{ product.date_revision | date:'dd/MM/yyyy' }}</div>
-          <div class="row-item actions">
-            <div class="actions-menu">
-              <button class="menu-button" (click)="toggleMenu(product.id, $event)">⋮</button>
-              
-              <div class="dropdown-menu" [class.active]="activeMenuId() === product.id">
-                <button class="dropdown-item" (click)="editProduct(product.id)">Editar</button>
-                <button class="dropdown-item" (click)="openDeleteModal(product)">Eliminar</button>
+                <div
+                  class="dropdown-menu"
+                  [class.active]="activeMenuId() === product.id"
+                >
+                  <button
+                    class="dropdown-item"
+                    (click)="editProduct(product.id)"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    (click)="openDeleteModal(product)"
+                  >
+                    Eliminar
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="list-footer">
-      <div class="results-count">{{ filteredProducts().length }} resultados</div>
-      
-      <div class="items-per-page">
-        <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange(itemsPerPage)">
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="20">20</option>
-        </select>
+      <div class="list-footer">
+        <div class="results-count">{{ getFilteredCount() }} resultados</div>
+
+        <div class="items-per-page">
+          <select
+            [(ngModel)]="itemsPerPage"
+            (change)="onItemsPerPageChange(itemsPerPage)"
+          >
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<!-- Modal de Eliminación -->
-<div class="modal-overlay" *ngIf="showDeleteModal">
-  <div class="modal-container">
-    <div class="modal-content">
-      <h3>¿Estás seguro de eliminar el producto "{{ productToDelete?.name }}"?</h3>
-      <div class="modal-actions">
-        <button class="cancel-button" (click)="closeDeleteModal()">Cancelar</button>
-        <button class="confirm-button" (click)="confirmDelete()">Confirmar</button>
+
+
+  <div
+    *ngIf="showDeleteModal"
+    class="modal-overlay"
+    (click)="closeDeleteModal()"
+  >
+    <div
+      class="modal-container"
+      (click)="$event.stopPropagation()"
+      style="border: 5px solid blue !important; background: white !important"
+    >
+      <div class="modal-content">
+       
+        <div *ngIf="error()" class="modal-error">
+          <div class="error-content">
+            <span class="error-icon">⚠️</span>
+            <span class="error-text">{{ error() }}</span>
+          </div>
+        </div>
+
+        <h3>
+          ¿Estás seguro de eliminar el producto
+          <strong>{{ productToDelete?.name }}</strong
+          >?
+        </h3>
+
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeDeleteModal()"
+            [disabled]="isLoading()"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="confirmDelete()"
+            [disabled]="isLoading()"
+          >
+            <span *ngIf="!isLoading()">Confirmar</span>
+            <span *ngIf="isLoading()">Eliminar</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>

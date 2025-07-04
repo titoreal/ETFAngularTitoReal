@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:3002', // URL de producción
+  apiUrl: 'http://localhost:3002', 
   defaultPageSize: 5,
   maxIdLength: 10,
   minIdLength: 3,

@@ -11,9 +11,10 @@ export class SearchPipe implements PipeTransform {
     
     term = term.toLowerCase();
     return products.filter(product => 
-      product.name.toLowerCase().includes(term) || 
+      product.name.toLowerCase().includes(term) ||
       product.description.toLowerCase().includes(term) ||
-      product.id.toLowerCase().includes(term)
+      // ← CORREGIDO: El ID puede ser número, convertir a string primero
+      product.id.toString().toLowerCase().includes(term)
     );
   }
 }

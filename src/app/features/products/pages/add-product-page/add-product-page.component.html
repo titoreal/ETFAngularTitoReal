@@ -1,12 +1,13 @@
-<div class="add-product-page">
-  <app-error-message
-    *ngIf="errorMessage"
-    [message]="errorMessage"
-    [dismissible]="true"
-  >
-  </app-error-message>
+<div class="product-list-container"> 
 
-  <app-product-form (formSubmitted)="onSubmit($event)"> </app-product-form>
+  <div class="form-container">
+    
+    <app-error-message *ngIf="errorMessage" [message]="errorMessage"></app-error-message>
+    <app-loading *ngIf="isLoading"></app-loading>
 
-  <app-loading *ngIf="isLoading"></app-loading>
+    <app-product-form
+      [isEditMode]="false"
+      (formSubmitted)="onSubmit($event)">
+    </app-product-form>
+  </div>
 </div>

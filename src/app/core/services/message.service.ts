@@ -13,12 +13,16 @@ export class MessageService {
 
   showError(message: string): void {
     this.errorSubject.next(message);
+    this.resetAfterDelay(this.clearError.bind(this));
   }
 
   showSuccess(message: string): void {
     this.successSubject.next(message);
-   
-    setTimeout(() => this.clearSuccess(), 5000);
+    this.resetAfterDelay(this.clearSuccess.bind(this));
+  }
+
+  private resetAfterDelay(callback: () => void): void {
+    setTimeout(() => callback(), 5000);
   }
 
   clearError(): void {

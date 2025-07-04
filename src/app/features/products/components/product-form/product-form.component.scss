@@ -9,14 +9,14 @@ $font-primary: 'Arial', sans-serif;
 
 @use 'sass:color';
 
-// === Reset ===
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-// === Contenedor general ===
+
 .product-list-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -24,7 +24,7 @@ $font-primary: 'Arial', sans-serif;
   font-family: $font-primary;
 }
 
-// === Encabezado con logo ===
+
 .bank-header {
   display: flex;
   flex-direction: column;
@@ -47,7 +47,6 @@ $font-primary: 'Arial', sans-serif;
   }
 }
 
-// === Formulario ===
 body {
   font-family: $font-primary;
   background-color: $color-background;
@@ -183,7 +182,7 @@ body {
   }
 }
 
-// === Componentes reutilizables ===
+
 app-loading {
   display: block;
   text-align: center;
@@ -195,7 +194,7 @@ app-error-message {
   margin-bottom: 1rem;
 }
 
-// === Responsive ===
+
 @media (max-width: 480px) {
   .form-container {
     margin: 0 0.5rem;

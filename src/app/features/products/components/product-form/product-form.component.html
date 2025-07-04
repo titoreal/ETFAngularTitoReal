@@ -12,11 +12,12 @@
 
     <form #productForm="ngForm" (ngSubmit)="onSubmit()" class="compact-form">
       <div class="form-row">
+      
         <div
           class="form-group"
           [class.invalid]="
-            productForm.controls['id'].invalid &&
-            (productForm.controls['id'].touched || formSubmitted)
+            idControl.invalid &&
+            (idControl.touched || formSubmittedFlag)
           "
         >
           <label for="id">ID</label>
@@ -35,31 +36,21 @@
 
           <div
             class="error-message"
-            *ngIf="
-              productForm.controls['id']?.invalid &&
-              (productForm.controls['id']?.touched || formSubmitted)
-            "
+            *ngIf="idControl.invalid && (idControl.touched || formSubmittedFlag)"
           >
-            <span *ngIf="productForm.controls['id'].errors?.['required']"
-              >Este campo es requerido</span
-            >
-            <span *ngIf="productForm.controls['id']?.errors?.['minlength']"
-              >Mínimo 3 caracteres</span
-            >
-            <span *ngIf="productForm.controls['id']?.errors?.['maxlength']"
-              >Máximo 10 caracteres</span
-            >
-            <span *ngIf="productForm.controls['id']?.errors?.['idExists']"
-              >ID ya existe</span
-            >
+            <span *ngIf="idControl.errors?.['required']">Este campo es requerido</span>
+            <span *ngIf="idControl.errors?.['minlength']">Mínimo 3 caracteres</span>
+            <span *ngIf="idControl.errors?.['maxlength']">Máximo 10 caracteres</span>
+            <span *ngIf="idControl.errors?.['idExists']">ID ya existe</span>
           </div>
         </div>
 
+      
         <div
           class="form-group"
           [class.invalid]="
-            productForm.controls['name'].invalid &&
-            (productForm.controls['name'].touched || formSubmitted)
+            nameControl.invalid &&
+            (nameControl.touched || formSubmittedFlag)
           "
         >
           <label for="name">Nombre</label>
@@ -68,35 +59,28 @@
             id="name"
             name="name"
             [(ngModel)]="product.name"
+            #nameControl="ngModel"
             required
             minlength="5"
             maxlength="100"
           />
           <div
             class="error-message"
-            *ngIf="
-              productForm.controls['name']?.invalid &&
-              (productForm.controls['name']?.touched || formSubmitted)
-            "
+            *ngIf="nameControl.invalid && (nameControl.touched || formSubmittedFlag)"
           >
-            <span *ngIf="productForm.controls['name'].errors?.['required']"
-              >Este campo es requerido</span
-            >
-            <span *ngIf="productForm.controls['name']?.errors?.['minlength']"
-              >Mínimo 5 caracteres</span
-            >
-            <span *ngIf="productForm.controls['name']?.errors?.['maxlength']"
-              >Máximo 100 caracteres</span
-            >
+            <span *ngIf="nameControl.errors?.['required']">Este campo es requerido</span>
+            <span *ngIf="nameControl.errors?.['minlength']">Mínimo 5 caracteres</span>
+            <span *ngIf="nameControl.errors?.['maxlength']">Máximo 100 caracteres</span>
           </div>
         </div>
       </div>
 
+      
       <div
         class="form-group"
         [class.invalid]="
-          productForm.controls['description'].invalid &&
-          (productForm.controls['description'].touched || formSubmitted)
+          descriptionControl.invalid &&
+          (descriptionControl.touched || formSubmittedFlag)
         "
       >
         <label for="description">Descripción</label>
@@ -104,6 +88,7 @@
           id="description"
           name="description"
           [(ngModel)]="product.description"
+          #descriptionControl="ngModel"
           required
           minlength="10"
           maxlength="200"
@@ -111,31 +96,21 @@
         ></textarea>
         <div
           class="error-message"
-          *ngIf="
-            productForm.controls['description']?.invalid &&
-            (productForm.controls['description']?.touched || formSubmitted)
-          "
+          *ngIf="descriptionControl.invalid && (descriptionControl.touched || formSubmittedFlag)"
         >
-          <span *ngIf="productForm.controls['description'].errors?.['required']"
-            >Este campo es requerido</span
-          >
-          <span
-            *ngIf="productForm.controls['description']?.errors?.['minlength']"
-            >Mínimo 10 caracteres</span
-          >
-          <span
-            *ngIf="productForm.controls['description']?.errors?.['maxlength']"
-            >Máximo 200 caracteres</span
-          >
+          <span *ngIf="descriptionControl.errors?.['required']">Este campo es requerido</span>
+          <span *ngIf="descriptionControl.errors?.['minlength']">Mínimo 10 caracteres</span>
+          <span *ngIf="descriptionControl.errors?.['maxlength']">Máximo 200 caracteres</span>
         </div>
       </div>
 
       <div class="form-row">
+       
         <div
           class="form-group"
           [class.invalid]="
-            productForm.controls['logo'].invalid &&
-            (productForm.controls['logo'].touched || formSubmitted)
+            logoControl.invalid &&
+            (logoControl.touched || formSubmittedFlag)
           "
         >
           <label for="logo">Logo</label>
@@ -144,26 +119,23 @@
             id="logo"
             name="logo"
             [(ngModel)]="product.logo"
+            #logoControl="ngModel"
             required
           />
           <div
             class="error-message"
-            *ngIf="
-              productForm.controls['logo']?.invalid &&
-              (productForm.controls['logo']?.touched || formSubmitted)
-            "
+            *ngIf="logoControl.invalid && (logoControl.touched || formSubmittedFlag)"
           >
-            <span *ngIf="productForm.controls['logo'].errors?.['required']"
-              >Este campo es requerido</span
-            >
+            <span *ngIf="logoControl.errors?.['required']">Este campo es requerido</span>
           </div>
         </div>
 
+    
         <div
           class="form-group"
           [class.invalid]="
-            productForm.controls['date_release'].invalid &&
-            (productForm.controls['date_release'].touched || formSubmitted)
+            dateReleaseControl.invalid &&
+            (dateReleaseControl.touched || formSubmittedFlag)
           "
         >
           <label for="date_release">Fecha Liberación</label>
@@ -172,34 +144,27 @@
             id="date_release"
             name="date_release"
             [(ngModel)]="product.date_release"
+            #dateReleaseControl="ngModel"
             required
             (change)="updateRevisionDate()"
             [min]="minDate"
           />
           <div
             class="error-message"
-            *ngIf="
-              productForm.controls['date_release']?.invalid &&
-              (productForm.controls['date_release']?.touched || formSubmitted)
-            "
+            *ngIf="dateReleaseControl.invalid && (dateReleaseControl.touched || formSubmittedFlag)"
           >
-            <span
-              *ngIf="productForm.controls['date_release'].errors?.['required']"
-              >Este campo es requerido</span
-            >
-            <span
-              *ngIf="productForm.controls['date_release']?.errors?.['minDate']"
-              >Debe ser igual o mayor a hoy</span
-            >
+            <span *ngIf="dateReleaseControl.errors?.['required']">Este campo es requerido</span>
+            <span *ngIf="dateReleaseControl.errors?.['minDate']">Debe ser igual o mayor a hoy</span>
           </div>
         </div>
       </div>
 
+     
       <div
         class="form-group"
         [class.invalid]="
-          productForm.controls['date_revision'].invalid &&
-          (productForm.controls['date_revision'].touched || formSubmitted)
+          dateRevisionControl.invalid &&
+          (dateRevisionControl.touched || formSubmittedFlag)
         "
       >
         <label for="date_revision">Fecha Revisión</label>
@@ -208,33 +173,62 @@
           id="date_revision"
           name="date_revision"
           [(ngModel)]="product.date_revision"
+          #dateRevisionControl="ngModel"
           required
           readonly
         />
         <div
           class="error-message"
-          *ngIf="
-            productForm.controls['date_revision']?.invalid &&
-            (productForm.controls['date_revision']?.touched || formSubmitted)
-          "
+          *ngIf="dateRevisionControl.invalid && (dateRevisionControl.touched || formSubmittedFlag)"
         >
-          <span
-            *ngIf="productForm.controls['date_revision'].errors?.['required']"
-            >Este campo es requerido</span
-          >
+          <span *ngIf="dateRevisionControl.errors?.['required']">Este campo es requerido</span>
         </div>
       </div>
 
+    
       <div class="form-actions">
-        <button type="button" class="btn btn-secondary" (click)="resetForm()">
+        <button 
+          type="button" 
+          (click)="resetForm()"
+          style="
+            background: #f5f5f5; 
+            border: 1px solid #ddd; 
+            color: #333; 
+            padding: 12px 24px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            font-weight: 500;
+            transition: all 0.2s;
+          "
+          onmouseover="this.style.backgroundColor='#e0e0e0'"
+          onmouseout="this.style.backgroundColor='#f5f5f5'">
           Reiniciar
         </button>
-        <button type="submit" class="btn btn-primary" [disabled]="isLoading">
-          {{ isEditMode ? "Guardar" : "Enviar" }}
-          <span
-            *ngIf="isLoading"
-            class="spinner-border spinner-border-sm"
-          ></span>
+        
+        <button 
+          type="submit" 
+          [disabled]="isLoading"
+          style="
+            background: #f39c12; 
+            border: 1px solid #f39c12; 
+            color: white; 
+            padding: 12px 24px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            font-weight: 500;
+            transition: all 0.2s;
+            opacity: 1;
+          "
+          [style.opacity]="isLoading ? '0.7' : '1'"
+          [style.cursor]="isLoading ? 'not-allowed' : 'pointer'"
+          onmouseover="if(!this.disabled) this.style.backgroundColor='#e67e22'"
+          onmouseout="if(!this.disabled) this.style.backgroundColor='#f39c12'">
+          <span>{{ isEditMode ? 'Guardar' : 'Enviar' }}</span>
+          <span *ngIf="isLoading" style="margin-left: 8px;">⏳</span>
         </button>
       </div>
     </form>

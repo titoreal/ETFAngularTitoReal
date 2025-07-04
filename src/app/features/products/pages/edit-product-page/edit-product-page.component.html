@@ -1,17 +1,15 @@
-<div class="edit-product-page">
-  <h2>Editar Producto</h2>
-  
-  <app-error-message 
-    *ngIf="errorMessage"
-    [message]="errorMessage">
-  </app-error-message>
+<div class="product-list-container">
 
-  <app-product-form
-    *ngIf="product"
-    [initialProduct]="product"
-    [isEditMode]="true" 
-    (formSubmitted)="onSubmit($event)"> 
-  </app-product-form>
+  <div class="form-container">
   
-  <app-loading *ngIf="isLoading"></app-loading>
+    <app-error-message *ngIf="errorMessage" [message]="errorMessage"></app-error-message>
+    <app-loading *ngIf="isLoading"></app-loading>
+
+    <app-product-form 
+      *ngIf="product"
+      [initialProduct]="product"
+      [isEditMode]="true"
+      (formSubmitted)="onSubmit($event)">
+    </app-product-form>
+  </div>
 </div>

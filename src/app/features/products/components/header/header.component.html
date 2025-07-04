@@ -1,0 +1,10 @@
+<header class="app-header">
+  <div class="header-container">
+    <h1 class="logo">{{ appName }}</h1>
+    <nav class="nav-menu">
+      @for (item of navItems; track item.path) {
+        <a [routerLink]="item.path" routerLinkActive="active">{{ item.label }}</a>
+      }
+    </nav>
+  </div>
+</header>
